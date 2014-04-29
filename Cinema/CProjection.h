@@ -11,7 +11,16 @@ protected:
 	
 public:
 	CProjection();
-	CProjection(tm,unsigned short int, CCinema_Room);
-	~CProjection();
+	CProjection(tm,unsigned short int);
+	virtual ~CProjection();
+
+	void set_tm_projection_time(tm);
+	void set_usi_cinema_room_number(unsigned short int);
+	void set_cinema_room(CCinema_Room);
+
+	tm get_tm_projection_time();
+	unsigned short int get_usi_cinema_room_nuber();
+	CCinema_Room get_cinema_room();
+
 };
 
