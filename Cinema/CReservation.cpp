@@ -32,6 +32,24 @@ CReservation::~CReservation()
 {
 }
 
-void CReservation::set_usi_movie_number(unsigned short int usi_movie_number){ this->usi_movie_number = usi_movie_number };
-void CReservation::set_usi_tickets_number(unsigned short int usi_tickets_number){this->usi_tickets_number=usi_tickets_number};
-void set_p_usi_ticket_index(unsigned short int*){/*........*/};
+void CReservation::set_usi_movie_number(unsigned short int usi_movie_number){ this->usi_movie_number = usi_movie_number; };
+void CReservation::set_usi_tickets_number(unsigned short int usi_tickets_number){ this->usi_tickets_number = usi_tickets_number; };
+void CReservation::set_p_usi_ticket_index(unsigned short int* usi_ticket_index){ this->p_usi_ticket_index = usi_ticket_index; };
+void CReservation::set_usi_ticket_index(unsigned short int usi_ticket_index, unsigned short int i)
+{
+	if (i < usi_tickets_number) p_usi_ticket_index[i] = usi_ticket_index;
+	else cout << "set_usi_ticket_index = MEMORY ERROR ! ! !" << endl;
+}
+void CReservation::set_d_total_cost(double d_total_cost){ this->d_total_cost = d_total_cost; };
+void CReservation::set_p_seat(room_array* p_seat){ this->p_seat = p_seat; };
+
+unsigned short int CReservation::get_usi_movie_number() { return usi_movie_number; };
+unsigned short int CReservation::get_usi_tickets_number() { return usi_tickets_number; };
+unsigned short int* CReservation::get_p_usi_ticket_index() { return p_usi_ticket_index; };
+unsigned short int CReservation::get_usi_ticket_index(unsigned short int i)
+{
+	if (i < usi_tickets_number) return p_usi_ticket_index[i];
+	else return 999;  //ERROR CONTROL
+}
+double CReservation::get_d_total_cost(){ return d_total_cost; };
+room_array* CReservation::get_p_seat(){ return p_seat; };

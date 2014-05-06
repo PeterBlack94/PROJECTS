@@ -8,6 +8,7 @@
 #include "CProjection.h"
 #include "CTicket.h"
 #include "CWorker.h"
+#include "CReservation.h"
 #include <locale.h>
 #include <cstdlib>
 
