@@ -17,13 +17,13 @@ protected:
 
 public:
 	CTicket();
-	CTicket(double,unsigned short int,unsigned short int, bool*, bool, code);
+	CTicket(double,unsigned short int,unsigned short int, bool [7], bool, code);
 	virtual ~CTicket();
 
 	void set_d_price(double);
 	void set_usi_min_age(unsigned short int);
 	void set_usi_max_age(unsigned short int);
-	bool set_b_validity(int,bool=true);
+	bool set_b_validity(int i,bool=true);
 	void set_b_if_3d(bool);
 	void set_C_code(code);
 

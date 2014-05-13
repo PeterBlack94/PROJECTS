@@ -45,6 +45,9 @@
     <ClInclude Include="CReservation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CCinema.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -72,6 +75,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CReservation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CCinema.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -79,6 +79,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CCinema.h" />
     <ClInclude Include="CCinema_Room.h" />
     <ClInclude Include="CMovie.h" />
     <ClInclude Include="CProjection.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="CWorker.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CCinema.cpp" />
     <ClCompile Include="CCinema_Room.cpp" />
     <ClCompile Include="CMovie.cpp" />
     <ClCompile Include="CProjection.cpp" />
