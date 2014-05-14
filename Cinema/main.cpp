@@ -13,11 +13,11 @@
 #include <locale.h>
 #include <cstdlib>
 
-
 // CProjection - zaczête...
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	setlocale(LC_ALL, "Polish");
 	CCinema::Cinema;
 
 	delete CCinema::Cinema();

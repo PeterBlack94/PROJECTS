@@ -2,12 +2,12 @@
 #include "CCinema.h"
 
 CCinema* CCinema::p_Cinema = NULL;
-CCinema_Room* CCinema::p_Cinema_Room = NULL;
-CTicket* CCinema::p_Ticket = NULL;
-CMovie* CCinema::p_Movie = NULL;
-CWorker* CCinema::p_Worker = NULL;
-CProjection* CCinema::p_Projection = NULL;
-CReservation* CCinema::p_Reservation = NULL;
+CCinema_Room** CCinema::p_Cinema_Room = NULL;
+CTicket** CCinema::p_Ticket = NULL;
+CMovie** CCinema::p_Movie = NULL;
+CWorker** CCinema::p_Worker = NULL;
+CProjection** CCinema::p_Projection = NULL;
+CReservation** CCinema::p_Reservation = NULL;
 
 CCinema::CCinema() { p_Cinema = this; }
 CCinema::~CCinema()
@@ -31,9 +31,12 @@ CCinema* CCinema::Cinema()
 {
 	if (p_Cinema == NULL)
 	{
+		cout << "SYSTEM REZERWACJI BILETÓW KINA HELIOS LUBIN" << endl;
+		cout << "===============================================================================" << endl<<endl;
+		cout << "INICJALIZACJA..." << endl;
 		CCinema();
-		ifstream room("Cinema Rooms.txt");
 
+		ifstream room("Cinema Rooms.txt");
 		if (room.good())
 		{
 			unsigned short int rooms_number = 0;
@@ -43,29 +46,28 @@ CCinema* CCinema::Cinema()
 			char place;
 
 			room >> rooms_number;
-			p_Cinema_Room = new CCinema_Room[rooms_number];
+			p_Cinema_Room = new CCinema_Room*[rooms_number];
 
 			for (int i = 0; i < rooms_number; ++i)
 			{
 				room >> ui_line;
 				room >> ui_column;
-				p_Cinema_Room[i].set_room_array({ ui_line, ui_column });
-
 				room >> b_if_3d;
-				p_Cinema_Room[i].set_b_if_3d(b_if_3d);
+				p_Cinema_Room[i] = new CCinema_Room({ ui_line, ui_column }, b_if_3d);
 
 				for (int l = 0; l < ui_line; ++l)
 				for (int c = 0; c < ui_column; ++c)
 				{
 					room >> place;
-					p_Cinema_Room[i].set_place(l, c, ::place(place));
+					p_Cinema_Room[i]->set_place(l, c, ::place(place));
 				}
 			}
-			room.close();
 		}
-		
+		else cout << "B³¹d wczytywania pliku \"Cinema_Room.txt\"!"<<endl;
+		room.close();
+
 		ifstream tickets("Tickets.txt");
-		if (room.good())
+		if (tickets.good())
 		{
 			unsigned short int tickets_number;
 			double d_price;
@@ -77,7 +79,7 @@ CCinema* CCinema::Cinema()
 			place C_code;
 			
 			tickets >> tickets_number;
-			p_Ticket = new CTicket[tickets_number];
+			p_Ticket = new CTicket*[tickets_number];
 
 			for (int i = 0; i < tickets_number; ++i)
 			{
@@ -88,22 +90,16 @@ CCinema* CCinema::Cinema()
 					tickets >> b_validity[j];
 				tickets >> b_if_3d;
 				tickets >> code;
-				p_Ticket[i] = CTicket::CTicket(d_price, usi_min_age, usi_max_age, b_validity, b_if_3d, (::code)code);
-				/*p_Ticket[i].set_d_price(d_price);
-				p_Ticket[i].set_usi_min_age(usi_min_age);
-				p_Ticket[i].set_usi_max_age(usi_max_age);
-				for (int k = 0; k < 7; ++k)
-				p_Ticket[i].set_b_validity(k,b_validity[k]);
-				p_Ticket[i].set_b_if_3d(b_if_3d);
-				p_Ticket[i].set_C_code((::code)code);*/
+				p_Ticket[i] = new CTicket(d_price, usi_min_age, usi_max_age, b_validity, b_if_3d, (::code)code);
 			}
-			tickets.close();
 		}
+		else cout << "B³¹d wczytywania pliku \"Tickets.txt\"!" << endl;
+		tickets.close();
 		
 		ifstream movies("Movies.txt.");
-		if (room.good())
+		if (movies.good())
 		{
-			unsigned short int movies_number;
+			unsigned short int usi_movies_number;
 			string s_title;
 			string s_production;
 			string s_director;
@@ -116,10 +112,10 @@ CCinema* CCinema::Cinema()
 			unsigned int ui_minimal_age;
 			unsigned int ui_duration;
 
-			movies >> movies_number;
-			p_Movie = new CMovie[movies_number];
+			movies >> usi_movies_number;
+			p_Movie = new CMovie*[usi_movies_number];
 
-			for (int i = 0; i < movies_number; ++i)
+			for (int i = 0; i < usi_movies_number; ++i)
 			{
 				movies >> s_title;
 				movies >> s_production;
@@ -133,10 +129,106 @@ CCinema* CCinema::Cinema()
 				movies >> ui_minimal_age;
 				movies >> ui_duration;
 
-				p_Movie[i]=
+				p_Movie[i] = new CMovie(s_title, s_production, s_director, s_scenario, s_cast, s_description, b_if_dubbing, b_if_3d, b_if_premiere, ui_minimal_age, ui_duration);
 			}
 		}
-	}
+		else cout << "B³¹d wczytywania pliku \"Movies.txt\"!" << endl;
+		movies.close();
 
+		ifstream workers("Workers.txt");
+		if (workers.good())
+		{
+			unsigned int ui_workers_number;
+			string s_first_name;
+			string s_last_name;
+			string s_email;
+			unsigned int ui_tel_number;
+			unsigned short int usi_age;
+			string s_login;
+			string s_password;
+			string s_position;
+			bool b_if_admin;
+
+			workers >> ui_workers_number;
+			p_Worker = new CWorker*[ui_workers_number];
+			
+			for (int i = 0; i < ui_workers_number; ++i)
+			{
+				workers >> s_first_name;
+				workers >> s_last_name;
+				workers >> s_email;
+				workers >> ui_tel_number;
+				workers >> usi_age;
+				workers >> s_login;
+				workers >> s_password;
+				workers >> s_position;
+				workers >> b_if_admin;
+
+				p_Worker[i] = new CWorker(s_first_name, s_last_name, s_email, ui_tel_number, usi_age, s_login, s_password, s_position, b_if_admin);
+			}
+		}
+		else cout << "B³¹d wczytywania pliku \"Workers.txt\"!" << endl;
+		workers.close();
+
+		ifstream projections("Projections.txt");
+		if (projections.good())
+		{
+			unsigned int ui_projections_number;
+			tm tm_projection_time;
+			unsigned short int usi_movie_number;
+			unsigned short int usi_cinema_room_number;
+			CCinema_Room* cinema_room;
+
+			unsigned short int rooms_number = 0;
+			bool b_if_3d;
+			unsigned int ui_line = 0;
+			unsigned int ui_column = 0;
+			char place;
+
+			projections >> ui_projections_number;
+			p_Projection = new CProjection*[ui_projections_number];
+
+			for (int i = 0; i < ui_projections_number; ++i)
+			{
+				p_Projection[i] = new CProjection;
+
+				projections >> tm_projection_time.tm_mday;
+				projections >> tm_projection_time.tm_mon;
+				projections >> tm_projection_time.tm_year;
+				projections >> tm_projection_time.tm_hour;
+				projections >> tm_projection_time.tm_min;
+
+				projections >> usi_movie_number;
+				projections >> usi_cinema_room_number;
+
+				projections >> ui_line;
+				projections >> ui_column;
+				projections >> b_if_3d;
+				cinema_room = new CCinema_Room({ ui_line, ui_column }, b_if_3d);
+
+				for (int l = 0; l < ui_line; ++l)
+				for (int c = 0; c < ui_column; ++c)
+				{
+					projections >> place;
+					cinema_room->set_place(l, c, ::place(place));
+				}
+				p_Projection[i]->set_cinema_room(*cinema_room);
+			}
+		}
+		else cout << "B³¹d wczytywania pliku \"Projections.txt\"!" << endl;
+		projections.close();
+
+		ifstream reservations("Reservations.txt");
+		if (projections.good())
+		{
+		/*	unsigned int ui_projection_number;
+			unsigned short int usi_tickets_number;
+			unsigned short int* p_usi_ticket_index;
+			double d_total_cost;
+			room_array* p_seat;*/
+		}
+		else cout << "B³¹d wczytywania pliku \"Reservations.txt\"!" << endl;
+		reservations.close();
+	}
 	return p_Cinema;
 }

@@ -11,7 +11,7 @@ CProjection::CProjection()
 
 	usi_movie_number = 0;
 	usi_cinema_room_number = 0;
-	// POBRANIE ROZK£ADU SALI NR 1 ! ! ! !
+	//POBRANIE ROZK£ADU SALI NR .... ! ! ! !
 }
 
 CProjection::CProjection(tm tm_projection_time, unsigned short int usi_movie_number, unsigned short int usi_cinema_room_number)

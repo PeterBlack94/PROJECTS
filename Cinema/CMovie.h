@@ -21,7 +21,7 @@ private:
 public:
 	CMovie();
 	CMovie(string,string,string,string,string,string,bool,bool, bool,unsigned int,unsigned int);
-	virtual ~CMovie();
+	~CMovie();
 
 	void set_s_title(string);
 	void set_s_production(string);
