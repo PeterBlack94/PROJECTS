@@ -173,10 +173,8 @@ void CCinema::Initialization()
 		tm tm_projection_time;
 		unsigned short int usi_movie_number;
 		unsigned short int usi_cinema_room_number;
-		CCinema_Room* cinema_room;
 
-		unsigned int ui_line = 0;
-		unsigned int ui_column = 0;
+		place** ppP_room;
 		char place;
 
 		projections >> ui_Projection_size;
@@ -193,15 +191,18 @@ void CCinema::Initialization()
 			projections >> usi_movie_number;
 			projections >> usi_cinema_room_number;
 
-			cinema_room = new CCinema_Room(p_Cinema->get_p_Cinema_Room(usi_cinema_room_number)->get_room_array(), p_Cinema->get_p_Movie(usi_movie_number)->get_b_if_3d());
-			for (unsigned int l = 0; l < ui_line; ++l)
-			for (unsigned int c = 0; c < ui_column; ++c)
+			ppP_room = new ::place*[p_Cinema->get_p_Cinema_Room(usi_cinema_room_number)->get_room_array().ui_line];
+			for (unsigned int j = 0; j < p_Cinema->get_p_Cinema_Room(usi_cinema_room_number)->get_room_array().ui_line; ++j)
+				ppP_room[j] = new ::place[get_p_Cinema_Room(usi_cinema_room_number)->get_room_array().ui_column];
+
+			for (unsigned int l = 0; l < p_Cinema->get_p_Cinema_Room(usi_cinema_room_number)->get_room_array().ui_line; ++l)
+			for (unsigned int c = 0; c < p_Cinema->get_p_Cinema_Room(usi_cinema_room_number)->get_room_array().ui_column; ++c)
 			{
 				projections >> place;
-				cinema_room->set_place(l, c, ::place(place));
+				ppP_room[l][c] = (::place) place;
 			}
-			p_Projection[i] = new CProjection(tm_projection_time, usi_movie_number, usi_cinema_room_number, *cinema_room);
-			// delete cinema_room;
+			p_Projection[i] = new CProjection(tm_projection_time, usi_movie_number, usi_cinema_room_number, *new CCinema_Room({ p_Cinema->get_p_Cinema_Room(usi_cinema_room_number)->get_room_array().ui_line, p_Cinema->get_p_Cinema_Room(usi_cinema_room_number)->get_room_array().ui_column }, p_Cinema->get_p_Movie(usi_movie_number)->get_b_if_3d(), ppP_room));
+			cout << endl << p_Projection[i]->get_cinema_room().get_place(0, 0) << endl;
 		}
 	}
 	else cout << "FILE ERROR \"Projections.txt\"!" << endl;
@@ -268,6 +269,46 @@ void CCinema::Finish()
 {
 	cout << endl<<"KOÑCZENIE PRACY PROGRAMU..."<<endl;
 	
+	delete[] p_Reservation;
+	p_Reservation = NULL;
+
+	fstream projections("Projections.txt", ios::out);
+	if (projections.good())
+	{
+		projections.clear();
+		projections << ui_Projection_size << endl;
+
+		tm tm_projection_time;
+
+		for (unsigned int i = 0; i < ui_Projection_size; ++i)
+		{
+			tm_projection_time = p_Projection[i]->get_tm_projection_time();
+
+			projections << (int) tm_projection_time.tm_mday << " ";
+			projections << (int) tm_projection_time.tm_mon << " ";
+			projections << (int) tm_projection_time.tm_year << " ";
+			projections << (int) tm_projection_time.tm_hour << " ";
+			projections << (int)tm_projection_time.tm_min << endl;
+
+			projections << p_Projection[i]->get_usi_movie_number() << endl;
+			projections << p_Projection[i]->get_usi_cinema_room_number() << endl;
+
+			for (unsigned int j = 0; j < p_Cinema_Room[p_Projection[i]->get_usi_cinema_room_number()]->get_room_array().ui_line; ++j)
+			{
+				for (unsigned int k = 0; k < p_Cinema_Room[p_Projection[i]->get_usi_cinema_room_number()]->get_room_array().ui_column; ++k)
+				{
+					projections << (char) p_Projection[i]->get_cinema_room().get_place(j, k)<<" ";
+				}
+				projections << endl;
+			}
+		}
+		projections.close();
+	}
+	else cout << "FILE ERROR \"Projections.txt\" !" << endl;
+
+	delete[] p_Projection;
+	p_Projection = NULL;
+
 	fstream room("Cinema Rooms.txt",ios::out);
 	if (room.good())
 	{
@@ -374,18 +415,7 @@ void CCinema::Finish()
 
 	delete[] p_Worker;
 	p_Worker = NULL;
-	/*
-	fstream projections("Projections.txt", ios::out);
-	if (projections.good())
-	{
-
-	}
-	else cout << "FILE ERROR \"Projections.txt\" !" << endl;
-	*/
-	delete[] p_Projection;
-	p_Projection = NULL;
-	delete[] p_Reservation;
-	p_Reservation = NULL;
+	
 	cout << endl << "PROGRAM ZAKOÑCZY£ DZIA£ANIE" << endl;
 	system("PAUSE");
 }
@@ -417,5 +447,15 @@ CTicket* CCinema::get_p_Ticket(unsigned short int i)
 	{
 		cout << "get_p_Ticket - MEMORY ERROR";
 		return p_Ticket[0];
+	}
+}
+
+CProjection* CCinema::get_p_Projection(unsigned int i)
+{
+	if (i < ui_Projection_size) return p_Projection[i];
+	else
+	{
+		cout << "get_p_Projection - MEMORY ERROR";
+		return p_Projection[0];
 	}
 }

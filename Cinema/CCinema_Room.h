@@ -31,5 +31,6 @@ public:
 	place** get_ppP_room();
 	place get_place(unsigned int,unsigned int);
 
+	CCinema_Room& operator= (CCinema_Room const&);
 };
 

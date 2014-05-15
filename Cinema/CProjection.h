@@ -21,8 +21,9 @@ public:
 
 	tm get_tm_projection_time();
 	unsigned short int get_usi_movie_number();
-	unsigned short int get_usi_cinema_room_nuber();
+	unsigned short int get_usi_cinema_room_number();
 	CCinema_Room get_cinema_room();
 
+	CProjection& operator=(CProjection const&);
 };
 

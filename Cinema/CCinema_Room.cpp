@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "CCinema_Room.h"
 
+using namespace std;
 
 CCinema_Room::CCinema_Room()
 {
@@ -21,14 +22,12 @@ CCinema_Room::CCinema_Room(::room_array room_array, bool b_if_3d)
 	this->room_array = room_array;
 	this->b_if_3d = b_if_3d;
 	ppP_room = new place*[room_array.ui_line];
-	for (int i = 0; i < room_array.ui_line; ++i)
+	for (unsigned int i = 0; i < room_array.ui_line; ++i)
 		ppP_room[i] = new place[room_array.ui_column];
 
-	for (int i = 0; i < room_array.ui_line;++i)
-	for (int j = 0; j < room_array.ui_column; ++j)
+	for (unsigned int i = 0; i < room_array.ui_line;++i)
+	for (unsigned int j = 0; j < room_array.ui_column; ++j)
 		ppP_room[i][j] =FREE;
-
-
 }
 
 CCinema_Room::CCinema_Room(::room_array room_array, bool b_if_3d, place** ppP_room)
@@ -64,4 +63,12 @@ place CCinema_Room::get_place(unsigned int ui_line, unsigned int ui_column)
 {
 	if (ui_line < (this->room_array.ui_line) && ui_column < (this->room_array.ui_column)) return ppP_room[ui_line][ui_column];
 	else return ERROR;
+}
+
+CCinema_Room& CCinema_Room::operator=(CCinema_Room const& cinema_room)
+{
+	room_array = cinema_room.room_array;
+	b_if_3d = cinema_room.b_if_3d;
+	ppP_room = cinema_room.ppP_room;
+	return *this;
 }

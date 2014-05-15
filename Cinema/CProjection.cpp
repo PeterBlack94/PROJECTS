@@ -22,7 +22,6 @@ CProjection::CProjection(tm tm_projection_time, unsigned short int usi_movie_num
 	this->cinema_room = cinema_room;
 }
 
-
 CProjection::~CProjection() {}
 
 void CProjection::set_tm_projection_time(tm tm_projection_time){ this->tm_projection_time = tm_projection_time; }
@@ -32,5 +31,14 @@ void CProjection::set_cinema_room(CCinema_Room cinema_room){ this->cinema_room =
 
 tm CProjection::get_tm_projection_time(){ return tm_projection_time; }
 unsigned short int CProjection::get_usi_movie_number(){ return usi_movie_number; }
-unsigned short int CProjection::get_usi_cinema_room_nuber(){ return usi_cinema_room_number; }
+unsigned short int CProjection::get_usi_cinema_room_number(){ return usi_cinema_room_number; }
 CCinema_Room CProjection::get_cinema_room(){ return cinema_room; }
+
+CProjection& CProjection::operator=(CProjection const& projection)
+{
+	tm_projection_time = projection.tm_projection_time;
+	usi_movie_number = projection.usi_movie_number;
+	usi_cinema_room_number = projection.usi_cinema_room_number;
+	cinema_room = projection.cinema_room;
+	return *this;
+}
