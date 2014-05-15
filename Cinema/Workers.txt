@@ -1,9 +1,9 @@
 1
-First name
-Last name
+First_name
+Last_name
 E-mail
 111111111
-0
+20
 worker
 password
 Position

@@ -309,12 +309,12 @@ void CCinema::Finish()
 			tickets << p_Ticket[i]->get_d_price() << " ";
 			tickets << p_Ticket[i]->get_usi_min_age() << " ";
 			tickets << p_Ticket[i]->get_usi_max_age() << endl;
-			for (unsigned int j = 0; j < 7; ++j)
+			for (unsigned short int j = 0; j < 7; ++j)
 			{
-				tickets << p_Ticket[i]->get_b_validity(i)<<" ";
+				tickets << p_Ticket[i]->get_b_validity(j)<<" ";
 			}
 			tickets << endl <<p_Ticket[i]->get_b_if_3d()<<endl;
-			tickets << (char)p_Ticket[i]->get_C_code();
+			tickets << (char)p_Ticket[i]->get_C_code()<<endl;
 		}
 		tickets.close();
 	}
@@ -323,10 +323,65 @@ void CCinema::Finish()
 	delete[] p_Ticket;
 	p_Ticket = NULL;
 
+	fstream movies("Movies.txt", ios::out);
+	if (movies.good())
+	{
+		movies.clear();
+		movies << usi_Movie_size<<endl;
+
+		for (unsigned short int i = 0; i < usi_Movie_size; ++i)
+		{
+			movies << p_Movie[i]->get_s_title()<<endl;
+			movies << p_Movie[i]->get_s_production()<<endl;
+			movies << p_Movie[i]->get_s_director()<<endl;
+			movies << p_Movie[i]->get_s_scenario()<<endl;
+			movies << p_Movie[i]->get_s_cast()<<endl;
+			movies << p_Movie[i]->get_s_description()<<endl;
+			movies << p_Movie[i]->get_b_if_dubbing()<<" ";
+			movies << p_Movie[i]->get_b_if_3d()<<" ";
+			movies << p_Movie[i]->get_b_if_premiere()<<" ";
+			movies << p_Movie[i]->get_ui_minimal_age()<<" ";
+			movies << p_Movie[i]->get_ui_duration()<<endl;
+		}
+		movies.close();
+	}
+	else cout << "FILE ERROR \"Movies.txt\" !" << endl;
+
 	delete[] p_Movie;
 	p_Movie = NULL;
+
+	fstream workers("Workers.txt", ios::out);
+	if (workers.good())
+	{
+		workers.clear();
+		workers << usi_Worker_size<<endl;
+
+		for (unsigned short int i = 0; i < usi_Worker_size; ++i)
+		{
+			workers << p_Worker[i]->get_s_first_name() << endl;
+			workers << p_Worker[i]->get_s_last_name() << endl;
+			workers << p_Worker[i]->get_s_email() << endl;
+			workers << p_Worker[i]->get_ui_tel_number() << endl;
+			workers << p_Worker[i]->get_usi_age() << endl;
+			workers << p_Worker[i]->get_s_login() << endl;
+			workers << p_Worker[i]->get_s_password() << endl;
+			workers << p_Worker[i]->get_s_position() << endl;
+			workers << p_Worker[i]->get_b_if_admin() << endl;
+		}
+		workers.close();
+	}
+	else cout << "FILE ERROR \"Workers.txt.\" !" << endl;
+
 	delete[] p_Worker;
 	p_Worker = NULL;
+	/*
+	fstream projections("Projections.txt", ios::out);
+	if (projections.good())
+	{
+
+	}
+	else cout << "FILE ERROR \"Projections.txt\" !" << endl;
+	*/
 	delete[] p_Projection;
 	p_Projection = NULL;
 	delete[] p_Reservation;

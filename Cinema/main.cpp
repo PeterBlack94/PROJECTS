@@ -20,8 +20,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	setlocale(LC_ALL, "Polish");
 	CCinema::Cinema();
 	CCinema::Initialization();
-	for (unsigned short int i = 0; i < 7;++i)
-	cout <<CCinema::Cinema()->get_p_Ticket(0)->get_b_validity(i) << " ";
+
 	cout << endl;
 	CCinema::Finish();
 	delete CCinema::Cinema();
