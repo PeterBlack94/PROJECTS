@@ -1,7 +1,6 @@
 #pragma once
 #include <ctime>
 #include "CCinema_Room.h"
-
 class CProjection
 {
 protected:
@@ -12,7 +11,7 @@ protected:
 	
 public:
 	CProjection();
-	CProjection(tm,unsigned short int,unsigned short int);
+	CProjection(tm,unsigned short int,unsigned short int, CCinema_Room);
 	virtual ~CProjection();
 
 	void set_tm_projection_time(tm);

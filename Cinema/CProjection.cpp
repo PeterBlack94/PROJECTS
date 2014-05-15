@@ -1,6 +1,6 @@
 #include "stdafx.h"
 #include "CProjection.h"
-
+#include "CCinema.h"
 
 CProjection::CProjection()
 {
@@ -11,15 +11,15 @@ CProjection::CProjection()
 
 	usi_movie_number = 0;
 	usi_cinema_room_number = 0;
-	//POBRANIE ROZK£ADU SALI NR .... ! ! ! !
+	cinema_room = *CCinema::Cinema()->get_p_Cinema_Room(0);
 }
 
-CProjection::CProjection(tm tm_projection_time, unsigned short int usi_movie_number, unsigned short int usi_cinema_room_number)
+CProjection::CProjection(tm tm_projection_time, unsigned short int usi_movie_number, unsigned short int usi_cinema_room_number, CCinema_Room cinema_room)
 {
 	this->tm_projection_time = tm_projection_time;
 	this->usi_movie_number = usi_movie_number;
 	this->usi_cinema_room_number = usi_cinema_room_number;
-	//POBRANIE ROZK£ADU SALI NR .... ! ! ! !
+	this->cinema_room = cinema_room;
 }
 
 

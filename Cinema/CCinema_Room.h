@@ -6,7 +6,7 @@ struct room_array
 	unsigned int ui_column;
 };
 
-enum place {NO_SEAT=' ', BUSY = 'X', FREE = 'O', SOFA_LEFT = 'L', SOFA_RIGHT = 'R', ERROR ='E'};
+enum place {NO_SEAT='-', BUSY = 'X', FREE = 'O', SOFA_LEFT = 'L', SOFA_RIGHT = 'R', ERROR ='E'};
 
 class CCinema_Room
 {

@@ -7,11 +7,11 @@ CCinema_Room::CCinema_Room()
 	room_array = { 1, 1 };
 	bool b_if_3d = 0;
 	ppP_room = new place*[room_array.ui_line];
-	for (int i = 0; i < room_array.ui_line; ++i)
+	for (unsigned int i = 0; i < room_array.ui_line; ++i)
 		ppP_room[i] = new place[room_array.ui_column];
 
-	for (int i = 0; i < room_array.ui_line; ++i)
-		for (int j = 0; j < room_array.ui_column; ++j)
+	for (unsigned int i = 0; i < room_array.ui_line; ++i)
+		for (unsigned int j = 0; j < room_array.ui_column; ++j)
 			ppP_room[i][j] = BUSY;
 }
 
@@ -24,6 +24,11 @@ CCinema_Room::CCinema_Room(::room_array room_array, bool b_if_3d)
 	for (int i = 0; i < room_array.ui_line; ++i)
 		ppP_room[i] = new place[room_array.ui_column];
 
+	for (int i = 0; i < room_array.ui_line;++i)
+	for (int j = 0; j < room_array.ui_column; ++j)
+		ppP_room[i][j] =FREE;
+
+
 }
 
 CCinema_Room::CCinema_Room(::room_array room_array, bool b_if_3d, place** ppP_room)
@@ -35,9 +40,9 @@ CCinema_Room::CCinema_Room(::room_array room_array, bool b_if_3d, place** ppP_ro
 
 CCinema_Room::~CCinema_Room()
 {
-	for (int i = 0; i < room_array.ui_line; ++i)
+	for (unsigned int i = 0; i < room_array.ui_line; ++i)
 		delete[] ppP_room[i];
-
+		
 	delete[] ppP_room;
 }
 

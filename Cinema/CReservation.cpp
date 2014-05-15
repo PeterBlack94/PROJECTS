@@ -38,7 +38,7 @@ void CReservation::set_p_usi_ticket_index(unsigned short int* usi_ticket_index){
 void CReservation::set_usi_ticket_index(unsigned short int usi_ticket_index, unsigned short int i)
 {
 	if (i < usi_tickets_number) p_usi_ticket_index[i] = usi_ticket_index;
-	else cout << "set_usi_ticket_index = MEMORY ERROR ! ! !" << endl;
+	else cout << "set_usi_ticket_index = MEMORY ERROR !" << endl;
 }
 void CReservation::set_d_total_cost(double d_total_cost){ this->d_total_cost = d_total_cost; };
 void CReservation::set_p_seat(room_array* p_seat){ this->p_seat = p_seat; };
