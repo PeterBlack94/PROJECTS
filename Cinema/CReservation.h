@@ -32,6 +32,8 @@ public:
 	unsigned short int get_usi_ticket_index(unsigned short int);
 	double get_d_total_cost();
 	room_array* get_p_seat();
-	room_array get_place(int);
+	room_array get_seat(unsigned short int i);
+
+	// DOPISAæ PRZECI¥¯ENIE = ! ! !
 };
 

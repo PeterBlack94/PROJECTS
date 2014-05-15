@@ -13,7 +13,7 @@
 #include <locale.h>
 #include <cstdlib>
 
-// CProjection - zaczête...
+// CReservation !
 
 int _tmain(int argc, _TCHAR* argv[])
 {

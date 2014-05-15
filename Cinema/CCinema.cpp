@@ -201,8 +201,7 @@ void CCinema::Initialization()
 				projections >> place;
 				ppP_room[l][c] = (::place) place;
 			}
-			p_Projection[i] = new CProjection(tm_projection_time, usi_movie_number, usi_cinema_room_number, *new CCinema_Room({ p_Cinema->get_p_Cinema_Room(usi_cinema_room_number)->get_room_array().ui_line, p_Cinema->get_p_Cinema_Room(usi_cinema_room_number)->get_room_array().ui_column }, p_Cinema->get_p_Movie(usi_movie_number)->get_b_if_3d(), ppP_room));
-			cout << endl << p_Projection[i]->get_cinema_room().get_place(0, 0) << endl;
+			p_Projection[i] = new CProjection(tm_projection_time, usi_movie_number, usi_cinema_room_number, new CCinema_Room({ p_Cinema->get_p_Cinema_Room(usi_cinema_room_number)->get_room_array().ui_line, p_Cinema->get_p_Cinema_Room(usi_cinema_room_number)->get_room_array().ui_column }, p_Cinema->get_p_Movie(usi_movie_number)->get_b_if_3d(), ppP_room));
 		}
 	}
 	else cout << "FILE ERROR \"Projections.txt\"!" << endl;
@@ -240,21 +239,16 @@ void CCinema::Initialization()
 			reservations >> d_total_cost;
 
 			p_usi_ticket_index = new unsigned short int[usi_tickets_number];
-			for (int j = 0; j < usi_tickets_number; ++j)
+			for (unsigned short int j = 0; j < usi_tickets_number; ++j)
 				reservations >> p_usi_ticket_index[j];
 
 			p_seat = new room_array[usi_tickets_number];
-			for (int k = 0; k < usi_tickets_number; ++k)
+			for (unsigned short int k = 0; k < usi_tickets_number; ++k)
 			{
 				reservations >> p_seat[k].ui_line;
 				reservations >> p_seat[k].ui_column;
 			}
 			p_Reservation[i] = new CReservation(ui_projection_number, usi_tickets_number, p_usi_ticket_index, d_total_cost, p_seat, s_first_name, s_last_name, s_email, ui_tel_number, usi_age);
-
-			delete[] p_seat;
-			p_seat = NULL;
-			delete[] p_usi_ticket_index;
-			p_usi_ticket_index = NULL;
 		}
 	}
 	else cout << "FILE ERROR \"Reservations.txt\"!" << endl;
@@ -269,6 +263,38 @@ void CCinema::Finish()
 {
 	cout << endl<<"KOÑCZENIE PRACY PROGRAMU..."<<endl;
 	
+	fstream reservations("Reservations.txt", ios::out);
+	if (reservations.good())
+	{
+		reservations.clear();
+		reservations << ui_Reservation_size << endl;
+
+		for (unsigned int i = 0; i < ui_Projection_size; ++i)
+		{
+			reservations << p_Reservation[i]->get_s_first_name() << " ";
+			reservations << p_Reservation[i]->get_s_last_name() << " ";
+			reservations << p_Reservation[i]->get_s_email() << " ";
+			reservations << p_Reservation[i]->get_ui_tel_number() << " ";
+			reservations << p_Reservation[i]->get_usi_age() << endl;
+			reservations << p_Reservation[i]->get_ui_projection_number() << " ";
+			reservations << p_Reservation[i]->get_usi_tickets_number() << " ";
+			reservations << p_Reservation[i]->get_d_total_cost() << endl;
+
+			for (int j = 0; j < p_Reservation[i]->get_usi_tickets_number(); ++j)
+				reservations << p_Reservation[i]->get_usi_ticket_index(j) << " ";
+
+			reservations << endl;
+
+			for (unsigned short int k = 0; k < p_Reservation[i]->get_usi_tickets_number(); ++k)
+			{
+				reservations << p_Reservation[i]->get_seat(k).ui_line << " ";
+				reservations << p_Reservation[i]->get_seat(k).ui_column << " ";
+			}
+			reservations << endl;
+		}
+		reservations.close();
+	}
+	else cout << "FILE ERROR \"Reservations.txt\" !" << endl;
 	delete[] p_Reservation;
 	p_Reservation = NULL;
 
@@ -297,7 +323,7 @@ void CCinema::Finish()
 			{
 				for (unsigned int k = 0; k < p_Cinema_Room[p_Projection[i]->get_usi_cinema_room_number()]->get_room_array().ui_column; ++k)
 				{
-					projections << (char) p_Projection[i]->get_cinema_room().get_place(j, k)<<" ";
+					projections << (char) p_Projection[i]->get_cinema_room()->get_place(j,k) << " ";
 				}
 				projections << endl;
 			}

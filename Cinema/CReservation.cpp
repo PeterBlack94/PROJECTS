@@ -53,3 +53,12 @@ unsigned short int CReservation::get_usi_ticket_index(unsigned short int i)
 }
 double CReservation::get_d_total_cost(){ return d_total_cost; };
 room_array* CReservation::get_p_seat(){ return p_seat; };
+room_array CReservation::get_seat(unsigned short int i)
+{
+	if (i < usi_tickets_number) return p_seat[i];
+	else
+	{
+		cout << "CReservation::get_seat - MEMORY ERROR";
+		return p_seat[0];
+	}
+}
