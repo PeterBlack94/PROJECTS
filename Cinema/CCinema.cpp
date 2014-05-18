@@ -18,7 +18,6 @@ unsigned int CCinema::ui_Reservation_size = 1;
 
 CCinema::CCinema() { p_Cinema = this; }
 CCinema::~CCinema(){ p_Cinema = NULL; }
-
 CCinema* CCinema::Cinema()
 {
 	if (p_Cinema == NULL) CCinema();
@@ -258,7 +257,6 @@ void CCinema::Initialization()
 	cout << endl;
 	system("PAUSE");
 }
-
 void CCinema::Finish()
 {
 	cout << endl<<"KOÑCZENIE PRACY PROGRAMU..."<<endl;
@@ -276,7 +274,7 @@ void CCinema::Finish()
 			reservations << p_Reservation[i]->get_s_email() << " ";
 			reservations << p_Reservation[i]->get_ui_tel_number() << " ";
 			reservations << p_Reservation[i]->get_usi_age() << endl;
-			reservations << p_Reservation[i]->get_ui_projection_number() << " ";
+			reservations << p_Reservation[i]->get_i_projection_number() << " ";
 			reservations << p_Reservation[i]->get_usi_tickets_number() << " ";
 			reservations << p_Reservation[i]->get_d_total_cost() << endl;
 
@@ -446,6 +444,74 @@ void CCinema::Finish()
 	system("PAUSE");
 }
 
+void CCinema::ClearProjections()
+{
+	unsigned int ui_projections_counter = 0;
+	unsigned int ui_reservations_counter = 0;
+	tm tm_system_time;
+
+	int* projection_numbers;
+	projection_numbers = new int[ui_Projection_size];
+
+	for (unsigned int i = 0; i < ui_Projection_size; ++i)
+		projection_numbers[i] = -1;
+
+	__time32_t long_time;
+	_time32(&long_time);
+	errno_t err;
+	err = _localtime32_s(&tm_system_time, &long_time);
+
+	for (unsigned int i = 0; i < ui_Projection_size; ++i)
+	{
+		if (p_Projection[i]->get_tm_projection_time()>tm_system_time)
+		{
+			projection_numbers[ui_projections_counter] = i;
+			for (int j = 0; j < ui_Reservation_size; ++j)
+			{
+				if (p_Reservation[j]->get_i_projection_number() == i)
+				{
+					p_Reservation[j]->set_i_projection_number(ui_projections_counter);
+					++ui_reservations_counter;
+				}
+			}
+			++ui_projections_counter;
+		}
+		else
+		{
+			for (int j = 0; j < ui_Reservation_size; ++j)
+			if (p_Reservation[j]->get_i_projection_number() == i)
+				p_Reservation[j]->set_i_projection_number(-1);
+		}
+	}
+
+	CProjection** new_p_Projection = new CProjection*[ui_projections_counter];
+	for (unsigned int i = 0; i < ui_projections_counter; ++i)
+	{
+		if (projection_numbers[i] != -1)
+			new_p_Projection[i] = p_Projection[projection_numbers[i]];
+	}
+
+	delete[] p_Projection;
+	p_Projection = new_p_Projection;
+	new_p_Projection = NULL;
+	ui_Projection_size = ui_projections_counter;
+
+	CReservation** new_p_Reservation = new CReservation*[ui_reservations_counter];
+	for (unsigned int i = 0,j=0; i < ui_Reservation_size; ++i)
+	{
+		if (p_Reservation[i]->get_i_projection_number() != -1)
+		{
+			new_p_Reservation[j] = p_Reservation[i];
+			++j;
+		}
+	}
+
+	delete[] p_Reservation;
+	p_Reservation = new_p_Reservation;
+	new_p_Reservation = NULL;
+	ui_Reservation_size = ui_reservations_counter;
+}
+
 CCinema_Room* CCinema::get_p_Cinema_Room(unsigned short int i)
 {
 	if (i < usi_Cinema_Room_size) return p_Cinema_Room[i];
@@ -455,7 +521,6 @@ CCinema_Room* CCinema::get_p_Cinema_Room(unsigned short int i)
 		return p_Cinema_Room[0];
 	}
 }
-
 CMovie* CCinema::get_p_Movie(unsigned short int i)
 {
 	if (i < usi_Movie_size) return p_Movie[i];
@@ -465,7 +530,6 @@ CMovie* CCinema::get_p_Movie(unsigned short int i)
 		return p_Movie[0];
 	}
 }
-
 CTicket* CCinema::get_p_Ticket(unsigned short int i)
 {
 	if (i < usi_Ticket_size) return p_Ticket[i];
@@ -475,7 +539,6 @@ CTicket* CCinema::get_p_Ticket(unsigned short int i)
 		return p_Ticket[0];
 	}
 }
-
 CProjection* CCinema::get_p_Projection(unsigned int i)
 {
 	if (i < ui_Projection_size) return p_Projection[i];

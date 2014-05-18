@@ -42,3 +42,31 @@ CProjection& CProjection::operator=(CProjection& projection)
 	cinema_room = projection.cinema_room;
 	return *this;
 }
+
+bool operator>(tm& tm_time_left, tm& tm_time_right)
+{
+	if (tm_time_left.tm_year > tm_time_right.tm_year) return true;
+	else if (tm_time_left.tm_year < tm_time_right.tm_year) return false;
+		else if (tm_time_left.tm_mon > tm_time_right.tm_mon) return true;
+			else if (tm_time_left.tm_mon < tm_time_right.tm_mon) return false;
+				else if (tm_time_left.tm_mday > tm_time_right.tm_mday) return true;
+					else if (tm_time_left.tm_mday < tm_time_right.tm_mday) return false;
+						else if (tm_time_left.tm_hour > tm_time_right.tm_hour) return true;
+							else if (tm_time_left.tm_hour < tm_time_right.tm_hour) return false;
+								else if (tm_time_left.tm_min > tm_time_right.tm_min) return true;
+									else return false;
+}
+
+bool operator<(tm& tm_time_left, tm& tm_time_right)
+{
+	if (tm_time_left.tm_year < tm_time_right.tm_year) return true;
+	else if (tm_time_left.tm_year > tm_time_right.tm_year) return false;
+		else if (tm_time_left.tm_mon < tm_time_right.tm_mon) return true;
+			else if (tm_time_left.tm_mon > tm_time_right.tm_mon) return false;
+				else if (tm_time_left.tm_mday < tm_time_right.tm_mday) return true;
+					else if (tm_time_left.tm_mday > tm_time_right.tm_mday) return false;
+						else if (tm_time_left.tm_hour < tm_time_right.tm_hour) return true;
+							else if (tm_time_left.tm_hour > tm_time_right.tm_hour) return false;
+								else if (tm_time_left.tm_min < tm_time_right.tm_min) return true;
+									else return false;
+}

@@ -13,15 +13,15 @@
 #include <locale.h>
 #include <cstdlib>
 
-// CReservation !
-
 int _tmain(int argc, _TCHAR* argv[])
 {
 	setlocale(LC_ALL, "Polish");
 	CCinema::Cinema();
 	CCinema::Initialization();
+	CCinema::ClearProjections();
 
 	cout << endl;
+	CCinema::ClearProjections();
 	CCinema::Finish();
 	delete CCinema::Cinema();
 	return 0;

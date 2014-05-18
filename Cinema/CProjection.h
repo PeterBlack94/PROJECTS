@@ -25,5 +25,7 @@ public:
 	CCinema_Room* get_cinema_room();
 
 	CProjection& operator=(CProjection&);
+	bool friend operator>(tm&,tm&);
+	bool friend operator<(tm&,tm&);
 };
 

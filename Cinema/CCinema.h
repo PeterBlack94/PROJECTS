@@ -35,6 +35,8 @@ public:
 	static void Initialization();
 	static void Finish();
 
+	static void ClearProjections();
+
 	static CProjection* get_p_Projection(unsigned int);
 	static CTicket* get_p_Ticket(unsigned short int);
 	static CCinema_Room* get_p_Cinema_Room(unsigned short int);

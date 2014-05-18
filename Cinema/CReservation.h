@@ -7,7 +7,7 @@ class CReservation :
 	public CHuman
 {
 private:
-	unsigned int ui_projection_number;
+	int i_projection_number;
 	unsigned short int usi_tickets_number;
 	unsigned short int* p_usi_ticket_index;
 	double d_total_cost;
@@ -15,10 +15,10 @@ private:
 
 public:
 	CReservation();
-	CReservation(unsigned int, unsigned short int, unsigned short int*, double, room_array*, string, string, string, unsigned int, unsigned short int);
+	CReservation(int, unsigned short int, unsigned short int*, double, room_array*, string, string, string, unsigned int, unsigned short int);
 	virtual ~CReservation();
 
-	void set_ui_projection_number(unsigned int);
+	void set_i_projection_number(int);
 	void set_usi_tickets_number(unsigned short int);
 	void set_p_usi_ticket_index(unsigned short int*);
 	void set_usi_ticket_index(unsigned short int, unsigned short int);
@@ -26,7 +26,7 @@ public:
 	void set_p_seat(room_array*);
 	bool set_seat(int,room_array);
 
-	unsigned int get_ui_projection_number();
+	int get_i_projection_number();
 	unsigned short int get_usi_tickets_number();
 	unsigned short int* get_p_usi_ticket_index();
 	unsigned short int get_usi_ticket_index(unsigned short int);
@@ -34,6 +34,6 @@ public:
 	room_array* get_p_seat();
 	room_array get_seat(unsigned short int i);
 
-	// DOPISAæ PRZECI¥¯ENIE = ! ! !
+	CReservation& operator=(CReservation&);
 };
 
