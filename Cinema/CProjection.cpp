@@ -70,3 +70,21 @@ bool operator<(tm& tm_time_left, tm& tm_time_right)
 								else if (tm_time_left.tm_min < tm_time_right.tm_min) return true;
 									else return false;
 }
+
+bool CProjection::Free_places(unsigned short int usi_tickets_number)
+{
+	unsigned int ui_counter = 0;
+	for (unsigned int i = 0; i < get_cinema_room()->get_room_array().ui_line;++i)
+	for (unsigned int j = 0; j < get_cinema_room()->get_room_array().ui_column; ++j)
+	{
+		if (get_cinema_room()->get_place(i, j) == FREE)
+			++ui_counter;
+	}
+	if (ui_counter >= usi_tickets_number) return true;
+	else
+	{
+		cout << "BRAK WOLNYCH MIEJSC !" << endl;
+		cout << "Iloœæ wolnych miejsc: " << ui_counter;
+		return false;
+	}
+}	

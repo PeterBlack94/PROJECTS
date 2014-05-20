@@ -8,6 +8,7 @@
 #include <fstream>
 #include <cstdlib>
 #include <iostream>
+#include <Windows.h>
 class CCinema
 {
 private:
@@ -35,13 +36,18 @@ public:
 	static void Initialization();
 	static void Finish();
 
+	static void ShowTickets(unsigned short int);
+	static void ShowMenu();
+	static void ShowFilms();
+	static void ShowProjections(unsigned short int);
+	static void ChooseProjection(unsigned short int, unsigned int&);
+
+	static void ClearScreen();
 	static void ClearProjections();
 
 	static CProjection* get_p_Projection(unsigned int);
 	static CTicket* get_p_Ticket(unsigned short int);
 	static CCinema_Room* get_p_Cinema_Room(unsigned short int);
 	static CMovie* get_p_Movie(unsigned short int);
-
-
 };
 

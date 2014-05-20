@@ -33,5 +33,7 @@ public:
 	bool get_b_validity(unsigned int i);
 	bool get_b_if_3d();
 	code get_C_code();
+
+	void ShowTickets();
 };
 

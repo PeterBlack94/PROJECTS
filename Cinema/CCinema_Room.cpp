@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "CCinema_Room.h"
 
+using namespace std;
+
 CCinema_Room::CCinema_Room()
 {
 	room_array = { 1, 1 };
@@ -87,4 +89,23 @@ CCinema_Room& CCinema_Room::operator=(CCinema_Room& cinema_room)
 		ppP_room[i][j] = cinema_room.get_place(i, j);
 	
 	return *this;
+}
+
+void CCinema_Room::ShowCinemaRoom()
+{
+	cout << " ";
+	for (unsigned int i = 0; i < room_array.ui_column; ++i)
+		cout << " " << i + 1;
+
+	cout << endl<<endl;
+
+	for (unsigned int i = 0; i < room_array.ui_line; ++i)
+	{
+		cout <<(char)((int)'A'+ i);
+		for (unsigned int j = 0; j < room_array.ui_column; ++j)
+		{
+			cout << " " << (char)get_place(i, j);
+		}
+		cout << endl<<endl;
+	}
 }

@@ -20,7 +20,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	CCinema::Initialization();
 	CCinema::ClearProjections();
 
-	cout << endl;
+	CCinema::ShowMenu();
+
 	CCinema::ClearProjections();
 	CCinema::Finish();
 	delete CCinema::Cinema();

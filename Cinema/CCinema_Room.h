@@ -1,4 +1,5 @@
 #pragma once
+#include <iostream>
 
 struct room_array
 {
@@ -32,5 +33,7 @@ public:
 	place get_place(unsigned int,unsigned int);
 
 	CCinema_Room& operator= (CCinema_Room&);
+
+	void ShowCinemaRoom();
 };
 

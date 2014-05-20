@@ -26,8 +26,7 @@ CCinema* CCinema::Cinema()
 
 void CCinema::Initialization()
 {
-	cout << "SYSTEM REZERWACJI BILETÓW KINA HELIOS LUBIN" << endl;
-	cout << "===============================================================================" << endl << endl;
+	ClearScreen();
 	cout << "INICJALIZACJA PROGRAMU..." << endl << endl;
 
 	fstream room("Cinema Rooms.txt",ios::in);
@@ -466,7 +465,7 @@ void CCinema::ClearProjections()
 		if (p_Projection[i]->get_tm_projection_time()>tm_system_time)
 		{
 			projection_numbers[ui_projections_counter] = i;
-			for (int j = 0; j < ui_Reservation_size; ++j)
+			for (unsigned int j = 0; j < ui_Reservation_size; ++j)
 			{
 				if (p_Reservation[j]->get_i_projection_number() == i)
 				{
@@ -478,7 +477,7 @@ void CCinema::ClearProjections()
 		}
 		else
 		{
-			for (int j = 0; j < ui_Reservation_size; ++j)
+			for (unsigned int j = 0; j < ui_Reservation_size; ++j)
 			if (p_Reservation[j]->get_i_projection_number() == i)
 				p_Reservation[j]->set_i_projection_number(-1);
 		}
@@ -510,6 +509,192 @@ void CCinema::ClearProjections()
 	p_Reservation = new_p_Reservation;
 	new_p_Reservation = NULL;
 	ui_Reservation_size = ui_reservations_counter;
+}
+
+void CCinema::ClearScreen()
+{
+	system("cls");
+	cout << "SYSTEM REZERWACJI BILETÓW KINA HELIOS LUBIN" << endl;
+	cout << "===============================================================================" << endl << endl << endl << endl;
+}
+void CCinema::ShowMenu()
+{
+	unsigned short int usi_option;
+	system("cls");
+	cout << "SYSTEM REZERWACJI BILETÓW KINA HELIOS LUBIN" << endl;
+	cout << "===============================================================================" << endl << endl<<endl<<endl;
+	cout << "WITAMY W SYSTEMIE REZERWACJI BILETÓW!" << endl;
+	cout << "Wybierz opcjê:" << endl;
+	cout << "1. Zarezerwuj bilet." << endl;
+	cout << "2. Wyœwietl repertuar." << endl;
+	cout << "3. Poka¿ cennik biletów." << endl;
+	cout << "4. Zaloguj siê do systemu." << endl;
+	cout << "5. Zamknij program." << endl << endl;
+	cout << "Wybrana opcja: ";
+	cin >> usi_option;
+
+	switch (usi_option)
+	{
+	case 1:
+	{
+			  unsigned short int usi_movie, usi_tickets_number,usi_ticket;
+			  unsigned short int* usi_ticket_index;
+			  unsigned int ui_projection;
+			  char c_seat;
+			  unsigned int ui_seat;
+			  room_array* seat;
+			  
+			  do
+			  {
+				  ClearScreen();
+				  cout << "Wybierz film:" << endl;
+				  ShowFilms();
+				  cout << "Wybrany film: ";
+				  cin >> usi_movie;
+
+				  if (usi_movie < 0 || usi_movie >= usi_Movie_size)
+				  {
+					  cout << "WPROWAD POPRAWNY NUMER!";
+					  Sleep(3 * 1000);
+				  }
+				  else
+				  {
+					  do
+					  {
+						  ClearScreen();
+						  cout << "Wybierz projekcjê:" << endl;
+						  ShowProjections(usi_movie);
+						  cout << "Wybrana projekcja: ";
+						  cin >> ui_projection;
+
+						  if (ui_projection < 0 || ui_projection >= ui_Projection_size)
+						  {
+							  cout << "WPROWAD POPRAWNY NUMER!";
+							  Sleep(3 * 1000);
+						  }
+					  } while (ui_projection < 0 || ui_projection >= ui_Projection_size);
+
+					  ChooseProjection(usi_movie, ui_projection);
+					  
+					  bool check;
+					  do
+					  {
+						  ClearScreen();
+						  cout << "Podaj iloœæ biletów: ";
+						  cin >> usi_tickets_number;
+						  check = p_Projection[ui_projection]->Free_places(usi_tickets_number);
+						  if (!check) Sleep(3 * 1000);
+					  } while (!check);
+
+					  seat = new room_array[usi_tickets_number];
+					  usi_ticket_index = new unsigned short int[usi_tickets_number];
+
+					  for (int i = 0; i < usi_tickets_number; ++i)
+					  {
+						  do
+						  {
+							  check = true;
+							  ClearScreen();
+							  p_Projection[ui_projection]->get_cinema_room()->ShowCinemaRoom();
+							  cout << "Podaj miejsce nr" << i + 1 << " (np. A 1): ";
+							  cin >> c_seat >> ui_seat;
+							  if (c_seat >= 'a' && c_seat <= '¿');
+							  c_seat = c_seat - 'a' + 'A';
+							  seat[i].ui_line = (int)(c_seat - 'A');
+							  seat[i].ui_column = ui_seat - 1;
+							  if (seat[i].ui_line >= p_Projection[ui_projection]->get_cinema_room()->get_room_array().ui_line || seat[i].ui_column >= p_Projection[ui_projection]->get_cinema_room()->get_room_array().ui_column)
+							  {
+								  check = false;
+								  cout << endl << "WPROWAD POPRAWNY NUMER MIEJSCA!";
+								  Sleep(3 * 1000);
+							  }
+							  else
+							  {
+								  if (p_Projection[ui_projection]->get_cinema_room()->get_place(seat[i].ui_line, seat[i].ui_column) != FREE)
+								  {
+									  check = false;
+									  cout << endl << "WYBRANE MIEJSCE NIE JEST WOLNE!";
+									  Sleep(3 * 1000);
+								  }
+								  else
+								  {
+									  p_Projection[ui_projection]->get_cinema_room()->set_place(seat[i].ui_line, seat[i].ui_column, BUSY);
+									  ClearScreen();
+									  cout << "Wybierz rodzaj biletu: "<<endl;
+									  ShowTickets(usi_movie);
+									  cin >> usi_ticket;
+								  }
+							  }
+
+						  } while (!check);
+					  }
+				  }
+			  } while (usi_movie < 0 || usi_movie >= usi_Movie_size);
+		}
+		break;
+	case 5:
+		break;
+	default:
+		{
+			   cout << "WPROWAD POPRAWNY NUMER!";
+			   Sleep(3 * 1000);
+			   ShowMenu();
+		}
+	}
+}
+
+void CCinema::ShowTickets(unsigned short int usi_film)//TEMP
+{
+	tm tm_now;
+	__time32_t long_time;
+	_time32(&long_time);
+	errno_t err;
+	err = _localtime32_s(&tm_now, &long_time);
+
+	for (unsigned int i = 0,j=0; i < usi_Ticket_size; ++i)
+	{
+		if (p_Ticket[i]->get_b_validity((int)tm_now.tm_wday) == 1 && p_Ticket[i]->get_b_if_3d() == p_Movie[usi_film]->get_b_if_3d())
+		{
+			cout << j + 1 << ". Typ: ";
+			if (p_Ticket[i]->get_C_code() == JUNIOR)
+				cout << "ulgowy";
+			if (p_Ticket[i]->get_C_code() == SENIOR)
+				cout << "ulgowy (senior)";
+			if (p_Ticket[i]->get_C_code() == NORMAL)
+				cout << "normalny";
+			cout << endl << "Cena: " << p_Ticket[i]->get_d_price();
+			cout << endl << "Minimalny wiek: " << p_Ticket[i]->get_usi_max_age();
+			cout << endl << "Maksymalny wiek: " << p_Ticket[i]->get_usi_max_age();
+		}
+	}
+}
+
+void CCinema::ShowFilms()
+{
+	for (unsigned short int i = 0; i < usi_Movie_size; ++i)
+	{
+		cout << endl << i << ". " << p_Movie[i]->get_s_title();
+	}
+	cout << endl;
+}
+void CCinema::ShowProjections(unsigned short int usi_movie)
+{
+	for (unsigned int i = 0,j=0; i < ui_Projection_size;++i)
+	if (p_Projection[i]->get_usi_movie_number() == usi_movie)
+	{
+		cout << j << ". Data: " << p_Projection[i]->get_tm_projection_time().tm_mday << "." << p_Projection[i]->get_tm_projection_time().tm_mon + 1 << endl;
+		cout << "   Godzina: " << p_Projection[i]->get_tm_projection_time().tm_hour << "." << p_Projection[i]->get_tm_projection_time().tm_min << endl << endl;
+	}
+}
+void CCinema::ChooseProjection(unsigned short int usi_movie, unsigned int& ui_projection)
+{
+	unsigned int ui_counter = 0,i=0;
+	for (; i < ui_Projection_size && ui_counter != ui_projection; ++i)
+	{
+		if (p_Projection[i]->get_usi_movie_number() == usi_movie)
+			++ui_counter;
+	}
+	ui_projection = i;
 }
 
 CCinema_Room* CCinema::get_p_Cinema_Room(unsigned short int i)

@@ -27,5 +27,7 @@ public:
 	CProjection& operator=(CProjection&);
 	bool friend operator>(tm&,tm&);
 	bool friend operator<(tm&,tm&);
+
+	bool Free_places(unsigned short int);
 };
 
