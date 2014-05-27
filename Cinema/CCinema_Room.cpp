@@ -93,6 +93,21 @@ CCinema_Room& CCinema_Room::operator=(CCinema_Room& cinema_room)
 
 void CCinema_Room::ShowCinemaRoom()
 {
+	cout << "  ";
+	if (room_array.ui_column>5)
+	{
+		for (unsigned int i = 0; i < (room_array.ui_column - 6) / 2; ++i)
+			cout << "=";
+	}
+	cout << "EKRAN";
+	
+	if (room_array.ui_column>5)
+	{
+		for (unsigned int i = 0; i < (room_array.ui_column - 6) / 2; ++i)
+			cout << "=";
+	}
+	cout << endl<<endl;
+
 	cout << " ";
 	for (unsigned int i = 0; i < room_array.ui_column; ++i)
 		cout << " " << i + 1;

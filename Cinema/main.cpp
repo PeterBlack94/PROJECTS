@@ -16,6 +16,9 @@
 int _tmain(int argc, _TCHAR* argv[])
 {
 	setlocale(LC_ALL, "Polish");
+	srand(time(NULL));
+	using namespace std;
+
 	CCinema::Cinema();
 	CCinema::Initialization();
 	CCinema::ClearProjections();

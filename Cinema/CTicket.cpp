@@ -51,6 +51,7 @@ bool CTicket::get_b_validity(unsigned int i_index)
 	if (i_index > 6 || i_index < 0)
 	{
 		cout << "CTicket::get_b_validity - MEMORY ERROR!" << endl;
+		Sleep(3 * 1000);
 		return false;
 	}
 	return b_validity[i_index]; 
